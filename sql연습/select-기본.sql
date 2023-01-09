@@ -43,7 +43,7 @@ select concat(first_name,' ',last_name) as '전체 이름' ,gender as '성별',h
 select emp_no,salary from salaries where from_date like '2001%' or  to_date like '2001%' order by salary desc;
 
 -- 예제 3 :  남자 직원의 이름,성별 입사일을 입사일순(선임순)으로 출력
-select first_name as '이름',gender as '성별',hire_date as '입사일' from employees where gender='m' order by '입사일';
+select first_name as '이름',gender as '성별',hire_date as '입사일' from employees where gender='m' order by 입사일;
 
 -- 에제 4 : 직원들의 사번 월급을 사번(asc) , 월급은 (desc) 
 select emp_no,salary ,from_date,to_date from salaries order by emp_no asc,salary desc; 
