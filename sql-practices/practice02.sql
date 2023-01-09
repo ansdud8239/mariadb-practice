@@ -22,11 +22,11 @@ select date_format(min(hire_date),'%Y년 %m월 %d일') from employees;
 
 -- 문제4.
 -- 현재 이 회사의 평균 연봉은 얼마입니까?
-select avg(salary) from salaries;
+select avg(salary) from salaries where to_date='9999-01-01';
 
 -- 문제5.
 -- 현재 이 회사의 최고/최저 연봉은 얼마입니까?
-select max(salary) as '최고 연봉' , min(salary) '최저 연봉' from salaries;
+select max(salary) as '최고 연봉' , min(salary) '최저 연봉' from salaries where to_date='9999-01-01';
 
 -- 문제6.
 -- birth max,min 와 현재 날짜 비교하여 나이 출력
