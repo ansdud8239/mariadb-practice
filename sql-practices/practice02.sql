@@ -6,7 +6,7 @@
 -- max - min
 -- 두 임금의 차이는 얼마인가요? 함께 “최고임금 – 최저임금”이란 타이틀로 출력해 보세요.
 select max(salary) as '최고임금',min(salary)as '최저 임금' from salaries;
-select (max(salary)-min(salary)) as '최고임금 - 최저 임금' from salaries;
+select (max(salary)-min(salary)) as '최고임금 - 최저임금' from salaries;
 
 -- 문제2.
 -- hire_date max
