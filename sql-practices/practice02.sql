@@ -6,7 +6,7 @@
 -- max - min
 -- 두 임금의 차이는 얼마인가요? 함께 “최고임금 – 최저임금”이란 타이틀로 출력해 보세요.
 select max(salary) as '최고임금',min(salary)as '최저 임금' from salaries;
-select (max(salary)-min(salary)) as '최고임금 - 최저 임금' from salaries;
+select (max(salary)-min(salary)) as '최고임금 - 최저임금' from salaries;
 
 -- 문제2.
 -- hire_date max
@@ -26,7 +26,11 @@ select avg(salary) from salaries where to_date='9999-01-01';
 
 -- 문제5.
 -- 현재 이 회사의 최고/최저 연봉은 얼마입니까?
+<<<<<<< HEAD
 select max(salary) as '최고 연봉' , min(salary) '최저 연봉' from salaries where to_date='9999-01-01';
+=======
+select max(salary) as '최고 연봉' , min(salary) '최저 연봉' from salaries  where to_date='9999-01-01';
+>>>>>>> e595958061cf066a02426887ee1564f844ddcf98
 
 -- 문제6.
 -- birth max,min 와 현재 날짜 비교하여 나이 출력
