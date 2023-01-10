@@ -17,6 +17,7 @@ select first_name as '이름' , gender as '성별', hire_date as '입사일' fro
 -- select count(*) from employees group by gender having gender='M'; -- 179973
 -- select count(*) from employees group by gender having gender='f'; -- 120051
 select count(if(gender='m',gender,null)) as '남',count(if(gender='f',gender,null)) as '여' from employees;
+select if(gender='m','남자','여자') as '성별',count(*) as '수' from employees group by gender; 
 
 -- 문제4.
 -- 현재(to_date='9999-01-01') 근무하고 있는 직원 수는 몇 명입니까? (salaries 테이블을 사용합니다.) 
@@ -52,5 +53,5 @@ select count(*) from titles where title='Engineer' and to_date='9999-01-01';
 -- 문제11
 -- 승진한 히스토리
 -- 사번이 13250(Zeydy)인 직원이 직책 변경 상황을 시간순으로 출력해보세요.
-select * from titles where emp_no='13250' order by to_date desc;
+select * from titles where emp_no='13250' order by from_date desc;
 
