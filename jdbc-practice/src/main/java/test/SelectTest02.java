@@ -32,7 +32,7 @@ public class SelectTest02 {
 			pstmt.setString(1, "%" + keyworld + "%");
 
 			// 5. sql 실행
-			rs = pstmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 
 			// 5. 결과
 			while (rs.next()) {
