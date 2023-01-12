@@ -1,4 +1,4 @@
-package hr.dao.test;
+package hr.main;
 
 import java.util.List;
 import java.util.Scanner;
