@@ -11,8 +11,14 @@ import java.util.List;
 import hr.vo.EmployeeVo;
 
 public class EmployeeDao {
+	public List<EmployeeVo> findBySalary(int minSalary, int maxSalary) {
+		List<EmployeeVo> result = new ArrayList<EmployeeVo>();
+
+		return result;
+	}
+
 	public List<EmployeeVo> findByName(String keyword) {
-		
+
 		List<EmployeeVo> result = new ArrayList<EmployeeVo>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -25,16 +31,16 @@ public class EmployeeDao {
 			String url = "jdbc:mariadb://192.168.10.109:3307/employees?charset=utf8";
 			conn = DriverManager.getConnection(url, "hr", "hr");
 
-			// 3. Statment 준비
-			String sql = "select emp_no,first_name,last_name,date_format(hire_date,'%Y-%m-%d') from employees where first_name like ? or last_name like ?;";
+			String sql = "   select emp_no, first_name, last_name, date_format(hire_date, '%Y-%m-%d')"
+					+ "     from employees" + "    where first_name like ?" + "       or last_name like ?"
+					+ " order by hire_date asc";
 			pstmt = conn.prepareStatement(sql);
 
-			// 4. binding
 			pstmt.setString(1, "%" + keyword + "%");
 			pstmt.setString(2, "%" + keyword + "%");
 
 			// 5. sql 실행
-			rs = pstmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 
 			// 5. 결과
 			while (rs.next()) {
@@ -43,7 +49,7 @@ public class EmployeeDao {
 				String firstName = rs.getString(2);
 				String lastName = rs.getString(3);
 				String hireDate = rs.getString(4);
-				
+
 				EmployeeVo vo = new EmployeeVo();
 				vo.setNo(no);
 				vo.setFirstName(firstName);
@@ -71,8 +77,7 @@ public class EmployeeDao {
 				e.printStackTrace();
 			}
 		}
-		
-		
+
 		return result;
 	}
 }
