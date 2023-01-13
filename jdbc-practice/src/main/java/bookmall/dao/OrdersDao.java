@@ -59,6 +59,7 @@ public class OrdersDao {
 		PreparedStatement pstmt = null;
 		String sql="";
 		int price = 0;
+		int orderNo=0;
 		ResultSet rs = null;
 		try {
 			
@@ -84,12 +85,21 @@ public class OrdersDao {
 			
 			pstmt.executeUpdate();
 			
+			
+			sql = "select last_insert_id() as orders";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				orderNo=rs.getInt(1);
+			}
+			
 			// order_book 테이블 insert
 			for(Integer key:vo.getBooklist().keySet()) {
-				sql = "insert into order_book values(?,9,?)";
+				sql = "insert into order_book values(?,?,?)";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, key);
-				pstmt.setInt(2, vo.getBooklist().get(key));				
+				pstmt.setInt(2, orderNo);
+				pstmt.setInt(3, vo.getBooklist().get(key));				
 				pstmt.executeUpdate();
 			}
 			
