@@ -17,9 +17,10 @@ public class BookShop {
 		Long no = scanner.nextLong();
 		scanner.close();
 
+		// false 대여불가
 		if (!(new BookDao().findRent(no))) {
 			System.out.println("대여중입니다.");
-		} else {
+		} else {//true 대여가능
 			BookVo vo = new BookVo();
 			vo.setNo(no);
 			vo.setRent("Y");
