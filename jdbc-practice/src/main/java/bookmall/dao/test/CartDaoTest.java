@@ -8,11 +8,11 @@ import bookmall.vo.CartVo;
 public class CartDaoTest {
 
 	public static void main(String[] args) {
-		CartVo vo1 = new CartVo();
-		vo1.setCount(2);
-		vo1.setBookNo(1l);
-		vo1.setUserNo(1l);
+		CartVo vo1 = new CartVo(1L,2,1L);
+		CartVo vo2 = new CartVo(2L,3,1L);
 		testInsert(vo1);
+		testInsert(vo2);
+
 		testFindAll();
 
 	}
@@ -24,6 +24,13 @@ public class CartDaoTest {
 		for(CartVo vo:list) {
 			System.out.println(vo);
 		}
+	}
+	public void cart() {
+		CartVo vo1 = new CartVo(1L,2,1L);
+		CartVo vo2 = new CartVo(2L,3,1L);
+		testInsert(vo1);
+		testInsert(vo2);
+		testFindAll();		
 	}
 
 

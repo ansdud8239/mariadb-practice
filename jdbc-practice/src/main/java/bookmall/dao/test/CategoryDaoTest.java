@@ -16,6 +16,10 @@ public class CategoryDaoTest {
 		vo2.setName("소설");
 		testInsert(vo2);
 		
+		CategoryVo vo3 = new CategoryVo();
+		vo3.setName("경제");
+		testInsert(vo3);
+		
 		testFindAll();
 	}
 	private static void testInsert(CategoryVo vo) {		
@@ -28,4 +32,20 @@ public class CategoryDaoTest {
 		}
 	}
 
+	public void cagegoryList() {
+		CategoryVo vo1 = new CategoryVo();
+		vo1.setName("컴퓨터/IT");
+		testInsert(vo1);
+		
+		CategoryVo vo2 = new CategoryVo();
+		vo2.setName("소설");
+		testInsert(vo2);
+		
+		CategoryVo vo3 = new CategoryVo();
+		vo3.setName("경제");
+		testInsert(vo3);
+		
+		testFindAll();
+		
+	}
 }

@@ -1,6 +1,5 @@
 package bookmall.dao.test;
 
-import java.util.HashMap;
 import java.util.List;
 
 import bookmall.dao.OrdersDao;
@@ -9,32 +8,50 @@ import bookmall.vo.OrdersVo;
 public class OrdersDaoTest {
 
 	public static void main(String[] args) {
-		
-		// 주문할 책 리스트
-		// key : booknum . value : 수량(권)
-		HashMap<Integer, Integer> booklist = new HashMap<>();
-		booklist.put(1, 2);
-		booklist.put(2, 1);
-		
+
+		// 회원인 둘리가 카트에 있는 책을 구입할 경우
 		OrdersVo vo1 = new OrdersVo();
 		vo1.setName("둘리");
 		vo1.setReceive("주소");
-		vo1.setOrderNo("20230113-00000002");
-		vo1.setBooklist(booklist);
 		testInsert(vo1);
-		
-		//testFindAll();
+
+		testFindOrder();
+		testFindOrderBook();
 
 	}
 
 	private static void testInsert(OrdersVo vo) {
-		new OrdersDao().insert(vo);
+		new OrdersDao().insertOrder(vo);
 	}
 
-	private static void testFindAll() {
-		List<OrdersVo> list = new OrdersDao().findAll();
+	private static void testFindOrder() {
+		List<OrdersVo> list = new OrdersDao().findOrder();
 		for (OrdersVo vo : list) {
-			System.out.println(vo);
+			System.out.println(vo.orderList());
 		}
 	}
+
+	private static void testFindOrderBook() {
+		List<OrdersVo> list = new OrdersDao().findOrderBook();
+		for (OrdersVo vo : list) {
+			System.out.println(vo.orderBookList());
+		}
+	}
+
+	public void orderList() {
+		// 회원인 둘리가 카트에 있는 책을 구입할 경우
+		OrdersVo vo1 = new OrdersVo();
+		vo1.setName("둘리");
+		vo1.setReceive("부산광역시 수영구");
+		testInsert(vo1);
+
+		testFindOrder();
+
+	}
+	public void orderBookList() {
+		
+		testFindOrderBook();
+
+	}
+
 }

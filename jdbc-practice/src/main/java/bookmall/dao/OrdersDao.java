@@ -14,26 +14,25 @@ import bookmall.vo.OrdersVo;
 public class OrdersDao {
 	private static final int key = 0;
 
-	public List<OrdersVo> findAll() {
+	public List<OrdersVo> findOrder() {
 		List<OrdersVo> result = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			conn = getConnetion();
-			String sql = "select a.no,b.name '책 이름',a.count '갯수',b.price '가격' from cart a join book b on a.book_no = b.no";
+			String sql = "select order_no,name,price,receive from orders";
 			pstmt = conn.prepareStatement(sql);
-
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-//				OrdersVo vo = new OrdersVo();
-//				vo.setNo(rs.getLong(1));
-//				vo.setName(rs.getString(2));
-//				vo.setCount(rs.getInt(3));
-//				vo.setPrice(rs.getInt(4));
-//
-//				result.add(vo);
+				OrdersVo vo = new OrdersVo();
+				vo.setOrderNo(rs.getString(1));
+				vo.setName(rs.getString(2));
+				vo.setPrice(rs.getInt(3));
+				vo.setReceive(rs.getString(4));
+
+				result.add(vo);
 			}
 
 		} catch (SQLException e) {
@@ -54,61 +53,81 @@ public class OrdersDao {
 		return result;
 	}
 
-	public void insert(OrdersVo vo) {
+	public List<OrdersVo> findOrderBook() {
+		List<OrdersVo> result = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql="";
-		int price = 0;
-		int orderNo=0;
 		ResultSet rs = null;
 		try {
-			
 			conn = getConnetion();
-			//가격 조회
-			for(Integer key:vo.getBooklist().keySet()) {
-				sql = "select price from book where no =?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setInt(1, key);
-				rs = pstmt.executeQuery();
-				while(rs.next()) {
-					price += rs.getInt(1);
-				}
-			}
-			
-			// orders테이블 insert
-			sql = "insert into orders values('null',?,?,?,?,1)";
+			String sql = "select b.no,b.name,a.count,c.name from order_book a "
+					+ "join book b on a.book_no=b.no "
+					+ "join orders c on c.no=a.orders_no";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getOrderNo());
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				OrdersVo vo = new OrdersVo();
+				vo.setNo(rs.getLong(1));
+				vo.setBookName(rs.getString(2));
+				vo.setCount(rs.getInt(3));
+				vo.setName(rs.getString(4));
+
+				result.add(vo);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("OrderDao error: " + e);
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+	public void insertOrder(OrdersVo vo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "";
+		int price = 0;
+		int autoNum = selectAutoNum();
+		ResultSet rs = null;
+		try {
+
+			conn = getConnetion();
+			// 가격 조회
+			sql = "select count*price from cart a join book b on a.book_no=b.no where user_no=(select no from user where name=?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getName());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				price += rs.getInt(1);
+			}
+
+			// orders테이블 insert
+			sql = "insert into orders values('null',concat((date_format(now(),'%Y%m%d')),'-',lpad(?,8,0)),?,?,?,(select no from user where name=?))";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, autoNum);
 			pstmt.setString(2, vo.getName());
 			pstmt.setInt(3, price);
 			pstmt.setString(4, vo.getReceive());
-			
+			pstmt.setString(5, vo.getName());
+
 			pstmt.executeUpdate();
-			
-			
-			sql = "select last_insert_id() as orders";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				orderNo=rs.getInt(1);
-			}
-			
-			// order_book 테이블 insert
-			for(Integer key:vo.getBooklist().keySet()) {
-				sql = "insert into order_book values(?,?,?)";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setInt(1, key);
-				pstmt.setInt(2, orderNo);
-				pstmt.setInt(3, vo.getBooklist().get(key));				
-				pstmt.executeUpdate();
-			}
-			
-			
-			
-			
-			
+
+			insertOrderBook(vo,autoNum);
+
 		} catch (SQLException e) {
-				System.out.println("OrderDao rollback error : " + e);
+			System.out.println("OrderDao rollback error : " + e);
 			System.out.println("OrderDao error : " + e);
 		} finally {
 			try {
@@ -125,6 +144,81 @@ public class OrdersDao {
 
 	}
 
+	public void insertOrderBook(OrdersVo vo,int autoNum) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "";
+		
+		ResultSet rs = null;
+		try {
+
+			conn = getConnetion();
+
+			sql = "select book_no,count from cart where user_no=(select no from user where name=?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,vo.getName());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				sql = "insert into order_book values (?,?,?)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setLong(1, rs.getInt(1));
+				pstmt.setInt(2, autoNum);
+				pstmt.setLong(3, rs.getInt(2));
+				pstmt.executeUpdate();
+			}
+
+		} catch (SQLException e) {
+			System.out.println("OrderDao error : " + e);
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private static int selectAutoNum() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "";
+		int autoNum = 0;
+		ResultSet rs = null;
+		try {
+
+			conn = getConnetion();
+
+			sql ="SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'orders' AND table_schema = 'bookmall';";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				autoNum = rs.getInt(1);
+			}
+
+
+		} catch (SQLException e) {
+			System.out.println("OrderDao error : " + e);
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return autoNum;
+	}
+
 	private static Connection getConnetion() throws SQLException {
 		Connection conn = null;
 		try {
@@ -139,4 +233,5 @@ public class OrdersDao {
 		return conn;
 
 	}
+
 }

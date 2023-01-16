@@ -8,6 +8,15 @@ public class CartVo {
 	private Long bookNo;
 	private Long userNo;
 	private String userName;
+	
+	public CartVo() {}
+	
+	public CartVo(Long bookNo,int count,Long userNo) {
+		this.bookNo = bookNo;
+		this.count = count;
+		this.userNo = userNo;
+	}
+	
 	public Long getNo() {
 		return no;
 	}

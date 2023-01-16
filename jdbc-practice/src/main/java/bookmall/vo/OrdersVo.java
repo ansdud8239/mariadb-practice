@@ -1,6 +1,5 @@
 package bookmall.vo;
 
-import java.util.HashMap;
 
 public class OrdersVo {
 
@@ -9,7 +8,9 @@ public class OrdersVo {
 	private String name;
 	private int price;
 	private String receive;
-	private HashMap<Integer, Integer> booklist;
+	private Long userNo;
+	private String bookName;
+	private int count;
 	
 	public Long getNo() {
 		return no;
@@ -41,18 +42,32 @@ public class OrdersVo {
 	public void setReceive(String receive) {
 		this.receive = receive;
 	}	
-	
-	public HashMap<Integer, Integer> getBooklist() {
-		return booklist;
-	}
-	public void setBooklist(HashMap<Integer, Integer> booklist) {
-		this.booklist = booklist;
-	}
 
-	@Override
-	public String toString() {
-		return "OrdersVo [no=" + no + ", orderNo=" + orderNo + ", name=" + name + ", price=" + price + ", receive="
+	public String getBookName() {
+		return bookName;
+	}
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public Long getUserNo() {
+		return userNo;
+	}
+	public void setUserNo(Long userNo) {
+		this.userNo = userNo;
+	}
+	public String orderList() {
+		return name+"님 주문 [주문번호= " + orderNo + ", 가격=" + price + ", 주소="
 				+ receive + "]";
+	}
+	public String orderBookList() {
+		return name+"님이 주문한 책 리스트 [책 번호= " + no + ", 책 제목=" + bookName + ", 개수="
+				+ count + "권]";
 	}
 	
 	

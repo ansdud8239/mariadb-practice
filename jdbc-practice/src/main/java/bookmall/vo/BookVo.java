@@ -7,6 +7,14 @@ public class BookVo {
 	private Long categoryNo;
 	private String categoryName;
 	
+	public BookVo() {}
+	
+	public BookVo(Long categoryNo,String name,int price) {
+		this.categoryNo = categoryNo;
+		this.name = name;
+		this.price = price;
+	}
+
 	public Long getNo() {
 		return no;
 	}
