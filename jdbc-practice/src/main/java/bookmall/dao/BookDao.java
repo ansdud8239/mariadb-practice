@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bookmall.vo.BookVo;
-import bookmall.vo.UserVo;
 
 public class BookDao {
 
@@ -20,7 +19,7 @@ public class BookDao {
 		ResultSet rs = null;
 		try {
 			conn = getConnetion();
-			String sql = "select a.no,a.name,b.name,a.price from book a join category b on a.category_no=b.no";
+			String sql = "select a.no,a.name,b.name,a.price from book a join category b on a.category_no=b.no order by no";
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();

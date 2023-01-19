@@ -6,10 +6,11 @@ public class BookVo {
 	private int price;
 	private Long categoryNo;
 	private String categoryName;
-	
-	public BookVo() {}
-	
-	public BookVo(Long categoryNo,String name,int price) {
+
+	public BookVo() {
+	}
+
+	public BookVo(Long categoryNo, String name, int price) {
 		this.categoryNo = categoryNo;
 		this.name = name;
 		this.price = price;
@@ -39,7 +40,6 @@ public class BookVo {
 		this.price = price;
 	}
 
-	
 	public Long getCategoryNo() {
 		return categoryNo;
 	}
@@ -48,7 +48,6 @@ public class BookVo {
 		this.categoryNo = categoryNo;
 	}
 
-	
 	public String getCategoryName() {
 		return categoryName;
 	}
@@ -59,9 +58,7 @@ public class BookVo {
 
 	@Override
 	public String toString() {
-		return "[책 번호=" + no + ", 책 제목= " + name +  ", 카테고리= " + categoryName+", 책 가격= " + price + "원]";
+		return "[책 번호=" + no + ", 책 제목= " + name + ", 카테고리= " + categoryName + ", 책 가격= " + price + "원]";
 	}
-
-	
 
 }

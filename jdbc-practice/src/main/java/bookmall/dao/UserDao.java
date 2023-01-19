@@ -10,11 +10,11 @@ import java.util.List;
 
 import bookmall.vo.UserVo;
 
-
 public class UserDao {
 
 	public static final String IP = "192.168.10.109";
 
+	// 모든 사용자 검색
 	public List<UserVo> findAll() {
 		List<UserVo> result = new ArrayList<>();
 		Connection conn = null;
@@ -34,7 +34,7 @@ public class UserDao {
 				vo.setPhoneNum(rs.getString(3));
 				vo.setEmail(rs.getString(4));
 				vo.setPassword(rs.getString(5));
-				
+
 				result.add(vo);
 			}
 
@@ -56,6 +56,8 @@ public class UserDao {
 		return result;
 	}
 
+	// 사용자 insert
+	// 비밀번호는 sha256으로 암호화
 	public void insert(UserVo vo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -64,7 +66,7 @@ public class UserDao {
 			conn = getConnetion();
 
 			String sql = "insert into user values('null',?,?,?,sha2(?,256))";
-			pstmt=conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getPhoneNum());
 			pstmt.setString(3, vo.getEmail());

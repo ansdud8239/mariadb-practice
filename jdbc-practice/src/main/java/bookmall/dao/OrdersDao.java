@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bookmall.vo.CartVo;
 import bookmall.vo.OrdersVo;
 
 public class OrdersDao {
-	private static final int key = 0;
 
 	public List<OrdersVo> findOrder() {
 		List<OrdersVo> result = new ArrayList<>();
@@ -60,8 +58,7 @@ public class OrdersDao {
 		ResultSet rs = null;
 		try {
 			conn = getConnetion();
-			String sql = "select b.no,b.name,a.count,c.name from order_book a "
-					+ "join book b on a.book_no=b.no "
+			String sql = "select b.no,b.name,a.count,c.name from order_book a " + "join book b on a.book_no=b.no "
 					+ "join orders c on c.no=a.orders_no";
 			pstmt = conn.prepareStatement(sql);
 
@@ -94,17 +91,21 @@ public class OrdersDao {
 
 		return result;
 	}
+
 	public void insertOrder(OrdersVo vo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = "";
 		int price = 0;
+		// autoIncrement 숫자
 		int autoNum = selectAutoNum();
 		ResultSet rs = null;
 		try {
 
 			conn = getConnetion();
+
 			// 가격 조회
+			// 주문자의 카트의 책 가격 select
 			sql = "select count*price from cart a join book b on a.book_no=b.no where user_no=(select no from user where name=?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
@@ -114,6 +115,7 @@ public class OrdersDao {
 			}
 
 			// orders테이블 insert
+			// 주문번호 현재날짜(20230116) - 번호
 			sql = "insert into orders values('null',concat((date_format(now(),'%Y%m%d')),'-',lpad(?,8,0)),?,?,?,(select no from user where name=?))";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, autoNum);
@@ -124,10 +126,10 @@ public class OrdersDao {
 
 			pstmt.executeUpdate();
 
-			insertOrderBook(vo,autoNum);
+			insertOrderBook(vo, autoNum);
 
 		} catch (SQLException e) {
-			System.out.println("OrderDao rollback error : " + e);
+
 			System.out.println("OrderDao error : " + e);
 		} finally {
 			try {
@@ -144,11 +146,11 @@ public class OrdersDao {
 
 	}
 
-	public void insertOrderBook(OrdersVo vo,int autoNum) {
+	public void insertOrderBook(OrdersVo vo, int autoNum) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = "";
-		
+
 		ResultSet rs = null;
 		try {
 
@@ -156,7 +158,7 @@ public class OrdersDao {
 
 			sql = "select book_no,count from cart where user_no=(select no from user where name=?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,vo.getName());
+			pstmt.setString(1, vo.getName());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				sql = "insert into order_book values (?,?,?)";
@@ -194,13 +196,12 @@ public class OrdersDao {
 
 			conn = getConnetion();
 
-			sql ="SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'orders' AND table_schema = 'bookmall';";
+			sql = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'orders' AND table_schema = 'bookmall';";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				autoNum = rs.getInt(1);
 			}
-
 
 		} catch (SQLException e) {
 			System.out.println("OrderDao error : " + e);

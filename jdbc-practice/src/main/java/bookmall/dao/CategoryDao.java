@@ -57,7 +57,7 @@ public class CategoryDao {
 			conn = getConnetion();
 
 			String sql = "insert into category values('null',?)";
-			pstmt=conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 
 			pstmt.executeUpdate();
@@ -79,7 +79,6 @@ public class CategoryDao {
 
 	}
 
-	
 	private static Connection getConnetion() throws SQLException {
 		Connection conn = null;
 		try {

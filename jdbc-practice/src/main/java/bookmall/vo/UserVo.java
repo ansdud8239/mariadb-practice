@@ -12,7 +12,7 @@ public class UserVo {
 
 	}
 
-	public UserVo(String name,String phoneNum,String email,String password) {
+	public UserVo(String name, String phoneNum, String email, String password) {
 		this.name = name;
 		this.phoneNum = phoneNum;
 		this.email = email;

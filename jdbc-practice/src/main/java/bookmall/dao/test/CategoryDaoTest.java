@@ -11,23 +11,25 @@ public class CategoryDaoTest {
 		CategoryVo vo1 = new CategoryVo();
 		vo1.setName("컴퓨터/IT");
 		testInsert(vo1);
-		
+
 		CategoryVo vo2 = new CategoryVo();
 		vo2.setName("소설");
 		testInsert(vo2);
-		
+
 		CategoryVo vo3 = new CategoryVo();
 		vo3.setName("경제");
 		testInsert(vo3);
-		
+
 		testFindAll();
 	}
-	private static void testInsert(CategoryVo vo) {		
+
+	private static void testInsert(CategoryVo vo) {
 		new CategoryDao().insert(vo);
 	}
+
 	private static void testFindAll() {
 		List<CategoryVo> list = new CategoryDao().findAll();
-		for(CategoryVo vo:list) {
+		for (CategoryVo vo : list) {
 			System.out.println(vo);
 		}
 	}
@@ -36,16 +38,16 @@ public class CategoryDaoTest {
 		CategoryVo vo1 = new CategoryVo();
 		vo1.setName("컴퓨터/IT");
 		testInsert(vo1);
-		
+
 		CategoryVo vo2 = new CategoryVo();
 		vo2.setName("소설");
 		testInsert(vo2);
-		
+
 		CategoryVo vo3 = new CategoryVo();
 		vo3.setName("경제");
 		testInsert(vo3);
-		
+
 		testFindAll();
-		
+
 	}
 }

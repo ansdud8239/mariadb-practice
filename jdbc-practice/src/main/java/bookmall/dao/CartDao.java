@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bookmall.vo.BookVo;
 import bookmall.vo.CartVo;
 
 public class CartDao {
 
+	// 카트에 담긴 책 정보
 	public List<CartVo> findAll() {
 		List<CartVo> result = new ArrayList<>();
 		Connection conn = null;
@@ -21,9 +21,7 @@ public class CartDao {
 		try {
 			conn = getConnetion();
 			String sql = "select c.name,a.no,b.name '책 이름',a.count '갯수',b.price '가격' from cart a "
-					+ "join book b on a.book_no = b.no "
-					+ "join user c on c.no = a.user_no "
-					+ "order by c.name,a.no";
+					+ "join book b on a.book_no = b.no " + "join user c on c.no = a.user_no " + "order by c.name,a.no";
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
