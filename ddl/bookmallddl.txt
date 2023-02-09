@@ -1,0 +1,178 @@
+-- 카테고리
+CREATE TABLE `category` (
+	`no`   int         NOT NULL COMMENT '번호', -- 번호
+	`name` varchar(45) NOT NULL COMMENT '이름' -- 이름
+)
+COMMENT '카테고리';
+
+-- 카테고리
+ALTER TABLE `category`
+	ADD CONSTRAINT `PK_category` -- 카테고리 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `category`
+	MODIFY COLUMN `no` int NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+ALTER TABLE `category`
+	AUTO_INCREMENT = 1;
+
+-- 책
+CREATE TABLE `book` (
+	`no`          int         NOT NULL COMMENT '번호', -- 번호
+	`name`        varchar(45) NOT NULL COMMENT '이름', -- 이름
+	`price`       varchar(45) NOT NULL COMMENT '가격', -- 가격
+	`category_no` int         NULL     COMMENT '카테고리번호' -- 카테고리번호
+)
+COMMENT '책';
+
+-- 책
+ALTER TABLE `book`
+	ADD CONSTRAINT `PK_book` -- 책 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `book`
+	MODIFY COLUMN `no` int NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+ALTER TABLE `book`
+	AUTO_INCREMENT = 1;
+
+-- 카트
+CREATE TABLE `cart` (
+	`no`      int NOT NULL COMMENT '번호', -- 번호
+	`count`   int NOT NULL COMMENT '수량', -- 수량
+	`book_no` int NOT NULL COMMENT '책번호', -- 책번호
+	`user_co` int NULL     COMMENT '사용자번호' -- 사용자번호
+)
+COMMENT '카트';
+
+-- 카트
+ALTER TABLE `cart`
+	ADD CONSTRAINT `PK_cart` -- 카트 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `cart`
+	MODIFY COLUMN `no` int NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+ALTER TABLE `cart`
+	AUTO_INCREMENT = 1;
+
+-- 주문
+CREATE TABLE `orders` (
+	`no`       int          NOT NULL COMMENT '번호', -- 번호
+	`order_no` varchar(45)  NOT NULL COMMENT '주문번호', -- 주문번호
+	`name`     varchar(45)  NOT NULL COMMENT '이름', -- 이름
+	`price`    int          NOT NULL COMMENT '가격', -- 가격
+	`receive`  varchar(100) NOT NULL COMMENT '주소', -- 주소
+	`user_no`  int          NULL     COMMENT '사용자번호' -- 사용자번호
+)
+COMMENT '주문';
+
+-- 주문
+ALTER TABLE `orders`
+	ADD CONSTRAINT `PK_orders` -- 주문 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `orders`
+	MODIFY COLUMN `no` int NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+ALTER TABLE `orders`
+	AUTO_INCREMENT = 1;
+
+-- 사용자
+CREATE TABLE `user` (
+	`no`        int         NOT NULL COMMENT '번호', -- 번호
+	`name`      varchar(45) NOT NULL COMMENT '이름', -- 이름
+	`phone_num` varchar(45) NULL     COMMENT '전화번호', -- 전화번호
+	`email`     varchar(45) NULL     COMMENT '이메일', -- 이메일
+	`password`  varchar(45) NOT NULL COMMENT '비밀번호' -- 비밀번호
+)
+COMMENT '사용자';
+
+-- 사용자
+ALTER TABLE `user`
+	ADD CONSTRAINT `PK_user` -- 사용자 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `user`
+	MODIFY COLUMN `no` int NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+ALTER TABLE `user`
+	AUTO_INCREMENT = 1;
+
+-- 주문 책
+CREATE TABLE `order_book` (
+	`book_no`   int NOT NULL COMMENT '책번호', -- 책번호
+	`orders_no` int NOT NULL COMMENT '주문번호', -- 주문번호
+	`count`     int NULL     COMMENT '수량' -- 수량
+)
+COMMENT '주문 책';
+
+-- 책
+ALTER TABLE `book`
+	ADD CONSTRAINT `FK_category_TO_book` -- 카테고리 -> 책
+		FOREIGN KEY (
+			`category_no` -- 카테고리번호
+		)
+		REFERENCES `category` ( -- 카테고리
+			`no` -- 번호
+		);
+
+-- 카트
+ALTER TABLE `cart`
+	ADD CONSTRAINT `FK_book_TO_cart` -- 책 -> 카트
+		FOREIGN KEY (
+			`book_no` -- 책번호
+		)
+		REFERENCES `book` ( -- 책
+			`no` -- 번호
+		);
+
+-- 카트
+ALTER TABLE `cart`
+	ADD CONSTRAINT `FK_user_TO_cart` -- 사용자 -> 카트
+		FOREIGN KEY (
+			`user_co` -- 사용자번호
+		)
+		REFERENCES `user` ( -- 사용자
+			`no` -- 번호
+		);
+
+-- 주문
+ALTER TABLE `orders`
+	ADD CONSTRAINT `FK_user_TO_orders` -- 사용자 -> 주문
+		FOREIGN KEY (
+			`user_no` -- 사용자번호
+		)
+		REFERENCES `user` ( -- 사용자
+			`no` -- 번호
+		);
+
+-- 주문 책
+ALTER TABLE `order_book`
+	ADD CONSTRAINT `FK_orders_TO_order_book` -- 주문 -> 주문 책
+		FOREIGN KEY (
+			`orders_no` -- 주문번호
+		)
+		REFERENCES `orders` ( -- 주문
+			`no` -- 번호
+		);
+
+-- 주문 책
+ALTER TABLE `order_book`
+	ADD CONSTRAINT `FK_book_TO_order_book` -- 책 -> 주문 책
+		FOREIGN KEY (
+			`book_no` -- 책번호
+		)
+		REFERENCES `book` ( -- 책
+			`no` -- 번호
+		);
